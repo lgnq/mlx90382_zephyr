@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	aliases {
+		encoder0 = &mlx90382;
+	};
+};
+
+&spi1 {
+	pinctrl-0 = <&spi1_sck_pa5 &spi1_miso_pa6 &spi1_mosi_pa7>;
+	pinctrl-names = "default";
+	status = "okay";
+
+	/*
+	 * cs-gpios needs to be populated as per the schematics
+	 * mlx90382 - CS#0
+	 */
+	cs-gpios = <&gpioa 8 GPIO_ACTIVE_LOW>;
+	
+	clock-frequency = <DT_FREQ_M(10)>;
+
+	mlx90382: mlx90382@0 {
+		compatible = "melexis,mlx90382";
+		reg = <0>;
+		spi-cpol;
+		spi-cpha;
+		spi-max-frequency = <DT_FREQ_M(10)>;
+		status = "okay";
+	};
+};
+

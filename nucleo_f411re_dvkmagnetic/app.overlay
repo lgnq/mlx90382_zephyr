@@ -1,0 +1,62 @@
+/*
+ * Copyright (c) 2021 Nordic Semiconductor ASA
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	aliases {
+		magn0    = &mlx90396_0;
+		magn1    = &mlx90396_1;
+		encoder0 = &mlx90382;
+	};
+};
+
+&i2c1 {
+	pinctrl-0 = <&i2c1_scl_pb8 &i2c1_sda_pb9>;
+	pinctrl-names = "default";
+	status = "okay";
+	clock-frequency = <400000>;
+
+	mlx90396_0: mlx90396@12 {
+		compatible = "melexis,mlx90396";
+		reg = <0x12>;
+		
+		irq-gpios = <&gpiod 7 GPIO_ACTIVE_LOW>;
+		drdy-gpios = <&gpiod 15 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
+
+	mlx90396_1: mlx90396@13 {
+		compatible = "melexis,mlx90396";
+		reg = <0x13>;
+		
+		irq-gpios = <&gpiod 7 GPIO_ACTIVE_LOW>;
+		drdy-gpios = <&gpiod 15 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};	
+};
+
+&spi1 {
+	pinctrl-0 = <&spi1_sck_pa5 &spi1_miso_pa6 &spi1_mosi_pa7>;
+	pinctrl-names = "default";
+	status = "okay";
+
+	/*
+	 * cs-gpios needs to be populated as per the schematics
+	 * mlx90382 - CS#0
+	 */
+	cs-gpios = <&gpioa 8 GPIO_ACTIVE_LOW>;
+	
+	clock-frequency = <DT_FREQ_M(10)>;
+
+	mlx90382: mlx90382@0 {
+		compatible = "melexis,mlx90382";
+		reg = <0>;
+		spi-cpol;
+		spi-cpha;
+		spi-max-frequency = <DT_FREQ_M(10)>;
+		status = "okay";
+	};
+};
+

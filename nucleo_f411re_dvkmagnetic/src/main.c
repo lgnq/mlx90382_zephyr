@@ -33,7 +33,19 @@ enum CMD
     RT_SENSOR_CTRL_USER_CMD_TEMP,
     RT_SENSOR_CTRL_USER_CMD_GET_ZEROPOSITION,
     RT_SENSOR_CTRL_USER_CMD_SET_ZEROPOSITION,
-    RT_SENSOR_CTRL_USER_CMD_SET_SENSING_MODE,
+    RT_SENSOR_CTRL_USER_CMD_SET_SENSING_MODE,   //266
+    RT_SENSOR_CTRL_USER_CMD_SET_GPIO_IF,    //267
+    RT_SENSOR_CTRL_USER_CMD_SET_DE_SR,  //268
+    RT_SENSOR_CTRL_USER_CMD_SET_DE_DIE, //269
+    RT_SENSOR_CTRL_USER_CMD_SET_FADDR0, //270
+    RT_SENSOR_CTRL_USER_CMD_SET_FADDR1, //271
+    RT_SENSOR_CTRL_USER_CMD_SET_FADDR2, //272
+    RT_SENSOR_CTRL_USER_CMD_SET_FADDR3, //273
+    RT_SENSOR_CTRL_USER_CMD_SET_FRFS,   //274
+    RT_SENSOR_CTRL_USER_CMD_SET_FRFSEN, //275
+    RT_SENSOR_CTRL_USER_CMD_SET_FRCRCEN,//276
+    RT_SENSOR_CTRL_USER_CMD_SET_FRINV,  //277
+    RT_SENSOR_CTRL_USER_CMD_READ_NVRAM,
 };
 
 uint16_t sample_freq = 100;
@@ -62,7 +74,7 @@ int8_t mlx90382_ops_ctrl_fn(const struct shell *shell, size_t argc, char *argv[]
 	int32_t cmd = -1;
 
 	cmd = strtol(argv[1], NULL, 10);
-    uint16_t args = atoi(argv[2]);
+    uint16_t args = strtol(argv[2], NULL, 0);
 
 	printk("mlx90382 ops ctrl is %d args = %d\r\n", cmd, args);
 	
@@ -98,6 +110,51 @@ int8_t mlx90382_ops_ctrl_fn(const struct shell *shell, size_t argc, char *argv[]
     case RT_SENSOR_CTRL_USER_CMD_SET_SENSING_MODE:
         result = mlx90382_set_sensing_mode(encoder, args);
         break;
+    case RT_SENSOR_CTRL_USER_CMD_SET_GPIO_IF:
+        result = mlx90382_set_gpio_if(encoder, args);
+        break;        
+    case RT_SENSOR_CTRL_USER_CMD_SET_DE_SR:
+        result = mlx90382_shadow_register_monitor_onoff(encoder, args);
+        break;
+    case RT_SENSOR_CTRL_USER_CMD_SET_DE_DIE:
+        // result = mlx90382_shadow_register_monitor_onoff(encoder, args);
+        break;
+    case RT_SENSOR_CTRL_USER_CMD_SET_FADDR0:
+        result = mlx90382_set_faddr0(encoder, args);
+        break;                            
+    case RT_SENSOR_CTRL_USER_CMD_SET_FADDR1:
+        result = mlx90382_set_faddr1(encoder, args);
+        break;                                    
+    case RT_SENSOR_CTRL_USER_CMD_SET_FADDR2:
+        result = mlx90382_set_faddr2(encoder, args);
+        break;                            
+    case RT_SENSOR_CTRL_USER_CMD_SET_FADDR3:
+        result = mlx90382_set_faddr3(encoder, args);
+        break;                                            
+    case RT_SENSOR_CTRL_USER_CMD_SET_FRFS:
+        result = mlx90382_set_frfs(encoder, args);
+        break;                                                    
+    case RT_SENSOR_CTRL_USER_CMD_SET_FRFSEN:
+        result = mlx90382_set_frfsen(encoder, args);
+        break;
+    case RT_SENSOR_CTRL_USER_CMD_SET_FRCRCEN:
+        result = mlx90382_set_frcrcen(encoder, args);
+        break;                                                            
+    case RT_SENSOR_CTRL_USER_CMD_SET_FRINV:
+        result = mlx90382_set_frinv(encoder, args);
+        break;    
+    case RT_SENSOR_CTRL_USER_CMD_READ_NVRAM:
+        uint16_t nvram_data[NVRAM_SIZE_WORDS];
+
+        result = mlx90382_read_nvram(encoder, nvram_data, NVRAM_SIZE_WORDS);
+        
+        printf("nvram:");
+        for (int i = 0; i<NVRAM_SIZE_WORDS; i++)
+        {
+            printf("0x%x ", nvram_data[i]);
+        }
+        printf("\n");
+        break;                                                                    
     default:
         printf("unknown MLX90382 CTRL CMD\r\n");
         return -1;
@@ -141,8 +198,8 @@ int main(void)
 
 	if (!device_is_ready(encoder)) 
 	{
-		printk("sensor: device not ready.\n");
-		return 0;
+		printk("sensor: device is not ready.\n");
+		return -1;
 	}
 
 	while (1) 

@@ -6,8 +6,19 @@
 
 / {
 	aliases {
+/*		cs0  = &cs0; */
 		encoder0 = &mlx90382;
 	};
+
+/*
+	cs_pins {
+		compatible = "gpio-leds";
+
+		cs0: cs_0 {
+			gpios = <&gpioa 8 GPIO_ACTIVE_LOW>;
+		};
+	};	
+*/	
 };
 
 &spi1 {
@@ -19,8 +30,9 @@
 	 * cs-gpios needs to be populated as per the schematics
 	 * mlx90382 - CS#0
 	 */
+
 	cs-gpios = <&gpioa 8 GPIO_ACTIVE_LOW>;
-	
+
 	clock-frequency = <DT_FREQ_M(10)>;
 
 	mlx90382: mlx90382@0 {

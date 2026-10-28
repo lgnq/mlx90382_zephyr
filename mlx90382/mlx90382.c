@@ -1273,6 +1273,60 @@ int mlx90382_set_frinv(const struct device *dev, uint8_t inv)
     return ret;
 }
 
+int mlx90382_set_sc_x1(const struct device *dev, uint16_t val)
+{
+    int ret = 0;
+
+	ret = mlx90382_program_nvram(dev, MLX90382_NV_SC_X1, val);
+
+    return ret;
+}
+
+int mlx90382_set_sc_x2(const struct device *dev, uint16_t val)
+{
+    int ret = 0;
+
+	ret = mlx90382_program_nvram(dev, MLX90382_NV_SC_X2, val);
+
+    return ret;
+}
+
+int mlx90382_set_sc_y1(const struct device *dev, uint16_t val)
+{
+    int ret = 0;
+
+	ret = mlx90382_program_nvram(dev, MLX90382_NV_SC_Y1, val);
+
+    return ret;
+}
+
+int mlx90382_set_sc_y2(const struct device *dev, uint16_t val)
+{
+    int ret = 0;
+
+	ret = mlx90382_program_nvram(dev, MLX90382_NV_SC_Y2, val);
+
+    return ret;
+}
+
+int mlx90382_set_sc_ye(const struct device *dev, uint16_t val)
+{
+    int ret = 0;
+
+	ret = mlx90382_program_nvram(dev, MLX90382_NV_SC_YE, val);
+
+    return ret;
+}
+
+int mlx90382_set_sc_hl(const struct device *dev, uint16_t val)
+{
+    int ret = 0;
+
+	ret = mlx90382_program_nvram(dev, MLX90382_NV_SC_HL, val&0x1FF);
+
+    return ret;
+}
+
 /* API implementation */
 static int mlx90382_attr_set(const struct device *dev, enum sensor_channel chan, enum sensor_attribute attr, const struct sensor_value *val)
 {

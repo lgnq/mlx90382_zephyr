@@ -137,5 +137,11 @@ int mlx90382_set_frcrcen(const struct device *dev, uint8_t onoff);
 int mlx90382_set_frinv(const struct device *dev, uint8_t inv);
 int mlx90382_read_nvram(const struct device *dev, uint16_t *data_rx, uint16_t n);
 int mlx90382_nvram_crc_update(const struct device *dev);
+int mlx90382_set_sc_x1(const struct device *dev, uint16_t val);
+int mlx90382_set_sc_x2(const struct device *dev, uint16_t val);
+int mlx90382_set_sc_y1(const struct device *dev, uint16_t val);
+int mlx90382_set_sc_y2(const struct device *dev, uint16_t val);
+int mlx90382_set_sc_ye(const struct device *dev, uint16_t val);
+int mlx90382_set_sc_hl(const struct device *dev, uint16_t val);
 
 #endif /* __MLX90382_H__ */

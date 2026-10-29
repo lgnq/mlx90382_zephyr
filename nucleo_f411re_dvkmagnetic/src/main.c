@@ -79,7 +79,7 @@ int8_t mlx90382_ops_ctrl_fn(const struct shell *shell, size_t argc, char *argv[]
 
 	int32_t cmd = -1;
 
-	cmd = strtol(argv[1], NULL, 10);
+	cmd = strtol(argv[1], NULL, 0);
     uint16_t args = strtol(argv[2], NULL, 0);
 
 	printk("mlx90382 ops ctrl is %d args = %d\r\n", cmd, args);
@@ -160,7 +160,26 @@ int8_t mlx90382_ops_ctrl_fn(const struct shell *shell, size_t argc, char *argv[]
             printf("0x%x ", nvram_data[i]);
         }
         printf("\n");
-        break;                                                                    
+        break;    
+    case RT_SENSOR_CTRL_USER_CMD_SET_SC_X1:
+        result = mlx90382_set_sc_x1(encoder, args);
+        break;    
+    case RT_SENSOR_CTRL_USER_CMD_SET_SC_X2:
+        result = mlx90382_set_sc_x2(encoder, args);
+        break;    
+    case RT_SENSOR_CTRL_USER_CMD_SET_SC_Y1:
+        result = mlx90382_set_sc_y1(encoder, args);
+        break;    
+    case RT_SENSOR_CTRL_USER_CMD_SET_SC_Y2:
+        result = mlx90382_set_sc_y2(encoder, args);
+        break;    
+    case RT_SENSOR_CTRL_USER_CMD_SET_SC_YE:
+        result = mlx90382_set_sc_ye(encoder, args);
+        break;            
+    case RT_SENSOR_CTRL_USER_CMD_SET_SC_HL:
+        result = mlx90382_set_sc_hl(encoder, args);
+        break;    
+
     default:
         printf("unknown MLX90382 CTRL CMD\r\n");
         return -1;
